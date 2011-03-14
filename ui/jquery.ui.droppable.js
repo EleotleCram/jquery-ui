@@ -212,6 +212,7 @@ $.ui.ddmanager = {
 			for (var j=0; j < list.length; j++) { if(list[j] == m[i].element[0]) { m[i].proportions.height = 0; continue droppablesLoop; } }; //Filter out elements in the current dragged item
 
 			if(type == "mousedown") m[i]._activate.call(m[i], event); //Activate the droppable if used directly from draggables
+			m[i].activated = true;
 
 			m[i].visible = m[i].element.css("display") != "none"; if(!m[i].visible) continue; 									//If the element is not visible, continue
 
@@ -230,9 +231,10 @@ $.ui.ddmanager = {
 			if (!this.options.disabled && this.visible && $.ui.intersect(draggable, this, this.options.tolerance))
 				dropped = dropped || this._drop.call(this, event);
 
-			if (!this.options.disabled && this.accept.call(this.element[0],(draggable.currentItem || draggable.element))) {
+			if(this.activated) {
 				this.isout = 1; this.isover = 0;
 				this._deactivate.call(this, event);
+				this.activated = undefined;
 			}
 
 		});
